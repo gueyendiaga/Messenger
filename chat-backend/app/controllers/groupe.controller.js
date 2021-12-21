@@ -1,5 +1,5 @@
 const db = require("../models");
-const Etagere = db.authors;
+const Groupe = db.groupes;
 
 // Create and Save a new Etagere
 exports.create = (req, res) => {
@@ -10,7 +10,7 @@ exports.create = (req, res) => {
   }
 
   // Create a Etagere
-  const etagere = new Etagere({
+  const etagere = new Groupe({
     number: req.body.number,
     description: req.body.description,
     published: req.body.published ? req.body.published : false
@@ -35,7 +35,7 @@ exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
 
-  Etagere.find(condition)
+  Groupe.find(condition)
     .then(data => {
       res.send(data);
     })
@@ -51,7 +51,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Etagere.findById(id)
+  Groupe.findById(id)
     .then(data => {
       if (!data)
         res.status(404).send({ message: "Not found Etagere with id " + id });
@@ -74,7 +74,7 @@ exports.update = (req, res) => {
 
   const id = req.params.id;
 
-  Etagere.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  Groupe.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then(data => {
       if (!data) {
         res.status(404).send({
@@ -93,7 +93,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Etagere.findByIdAndRemove(id, { useFindAndModify: false })
+  Groupe.findByIdAndRemove(id, { useFindAndModify: false })
     .then(data => {
       if (!data) {
         res.status(404).send({
@@ -114,7 +114,7 @@ exports.delete = (req, res) => {
 
 // Delete all Etageres from the database.
 exports.deleteAll = (req, res) => {
-  Etagere.deleteMany({})
+  Groupe.deleteMany({})
     .then(data => {
       res.send({
         message: `${data.deletedCount} Etageres were deleted successfully!`
@@ -130,7 +130,7 @@ exports.deleteAll = (req, res) => {
 
 // Find all published Etageres
 exports.findAllPublished = (req, res) => {
-  Etagere.find({ published: true })
+  Groupe.find({ published: true })
     .then(data => {
       res.send(data);
     })

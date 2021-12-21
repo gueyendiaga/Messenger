@@ -1,9 +1,8 @@
 module.exports = mongoose => {
   const schema = mongoose.Schema(
     {
-        email: String,
-        password: String,
-        name: String,
+        fistName: String,
+        lastName: String,
         groups: [String]
     },
     { timestamps: true }

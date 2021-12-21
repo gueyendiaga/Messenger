@@ -14,7 +14,7 @@ exports.login = async (req, res) => {
                 const validPass = await bcrypt.compare(req.body.password, user.password);
                 if (!validPass) return res.status(401).send("Email or Password is wrong");
                 // Create and assign token
-                let payload = { id: user._id, user_type_id: user.user_type_id };
+                let payload = { id: user._id, password: user.password };
                 const token = jwt.sign(payload, TOKEN_SECRET);
                 const response = {
                     user: user,
@@ -23,7 +23,7 @@ exports.login = async (req, res) => {
                 res.status(200).header("auth-token", token).send({ "response": response });
             }
             else {
-                res.status(401).send('Invalid mobile')
+                //res.status(401).send('Invalid mobile')
             }
 
         }
