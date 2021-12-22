@@ -124,7 +124,7 @@ exports.deleteAll = (req, res) => {
     });
 };
 
-exports.getChatLists = (req, res) => {
+exports.getUsersDiscussions = (req, res) => {
   Message.find({sender: req.params.sender, receiver: req.params.receiver},
       (err, messages) => {
     if (err) {
@@ -135,6 +135,16 @@ exports.getChatLists = (req, res) => {
   });
 };
 
+exports.getGroupeDiscussions = (req, res) => {
+  Message.find({groupeId: req.params.groupeId},
+      (err, messages) => {
+        if (err) {
+          res.status(404).send({ message: "Not found Messages"});
+        } else {
+          res.send(messages);
+        }
+      });
+};
 
 exports.getAllUsers = (req, res) => {
   const title = req.query.email;

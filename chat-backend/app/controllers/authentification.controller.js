@@ -18,9 +18,9 @@ exports.login = async (req, res) => {
                 const token = jwt.sign(payload, TOKEN_SECRET);
                 const response = {
                     user: user,
-                    token: token
+                    accessToken: token
                 };
-                res.status(200).header("auth-token", token).send({ "response": response });
+                res.status(200).header("auth-token", token).send({ "data": response });
             }
             else {
                 //res.status(401).send('Invalid mobile')
@@ -62,10 +62,10 @@ exports.register = async (req, res) => {
 
                         const response = {
                             user: user,
-                            token: token
+                            accessToken: token
                         };
                         // create payload then Generate an access token
-                        res.status(200).send({ 'response': response })
+                        res.status(200).send({ 'data': response })
                     }
                 })
             }
