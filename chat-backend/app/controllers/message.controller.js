@@ -1,7 +1,16 @@
 const db = require("../models");
 const Message = db.messages;
 const User = db.users;
+const io = require('../../server');
 
+
+io.on('connection', (socket) => {
+  console.log('New User Logged In with ID '+socket.id);
+  socket.on('chatMessage', (data) =>{
+
+  });
+
+});
 // Create and Save a new Etagere
 exports.create = (req, res) => {
   // Validate request
@@ -18,7 +27,6 @@ exports.create = (req, res) => {
     receiver: req.body.receiver,
   });
 
-  // Save Etagere in the database
   message
     .save(message)
     .then(data => {
@@ -123,10 +131,26 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+exports.deleteAllMessage = (req, res) => {
+  Message.deleteMany({})
+    .then(data => {
+      res.send({
+        message: `${data.deletedCount} Message were deleted successfully!`
+      });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while removing all messages."
+      });
+    });
+};
 
 exports.getUsersDiscussions = (req, res) => {
-  Message.find({sender: req.params.sender, receiver: req.params.receiver},
-      (err, messages) => {
+  Message.find({ $or: [
+       {sender: req.params.sender, receiver: req.params.receiver},
+       {sender: req.params.receiver, receiver: req.params.sender}
+    ]}, (err, messages) => {
     if (err) {
       res.status(404).send({ message: "Not found Messages"});
     } else {

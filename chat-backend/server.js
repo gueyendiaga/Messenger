@@ -3,8 +3,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 global.__basedir = __dirname;
 global.baseUrl =  "http://localhost:8080/uploads/";
+const socketio = require('socket.io');
 
 const app = express();
+const server = require('http').createServer(app);
+const io = socketio(server);
+
+module.exports = io;
 
 var corsOptions = {
   origin: "*"
@@ -34,11 +39,6 @@ db.mongoose
     process.exit();
   });
 
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
-});
-
 require("./app/routes/api.routes")(app);
 
 // set port, listen for requests
@@ -46,3 +46,4 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
